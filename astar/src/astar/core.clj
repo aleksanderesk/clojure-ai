@@ -2,37 +2,37 @@
   (:require [astar.tile :as tile]
             [astar.algo :as algo]))
 
-(def start
-  [[1 2 3]
-   [4 5 6]
-   [0 7 8]])
-
-(def g0
+(def goal
   [[1 2 3]
    [4 5 6]
    [7 8 0]])
 
-(def g1
+(def s0
+  [[1 2 3]
+   [4 5 6]
+   [0 7 8]])
+
+(def s1
   [[6 4 2]
    [1 5 3]
    [7 0 8]])
 
-(def g2
+(def s2
   [[6 4 2]
    [8 5 3]
    [1 0 7]])
 
-(def g3
+(def s3
   [[8 0 7]
    [6 5 4]
    [3 2 1]])
 
-(def g4
+(def s4
   [[6 4 7]
    [8 5 0]
    [3 2 1]])
 
-(def g5
+(def s5
   [[1 2 3]
    [4 5 6]
    [8 7 0]])
