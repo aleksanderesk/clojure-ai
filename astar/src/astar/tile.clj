@@ -1,4 +1,4 @@
-(ns astar.tile-puzzle
+(ns astar.tile
   (:require [clojure.data.int-map :as i]))
 
 (defn- swap
@@ -29,7 +29,7 @@
              (map vector u v))))
 
 ;;; goal-fn
-(defn puzzle-goal
+(defn goal
 "Returns a goal function accepting a state to determine if the goal was reached"
 [goal]
 (fn [state] (= state goal)))
@@ -51,7 +51,7 @@
          (swap state-coords 0)
          coords->matrix))))
 
-(defn puzzle-move
+(defn move
 "Returns a list of state-action-weight moves obtainable from the provided state"
 [state]
 (for [move (find-moves state)]
@@ -75,4 +75,3 @@
                   :let [g-coord (get goal-coords value)]
                   :when (not= 0 value)] ; don't include blank in Manhattan calculation
               (manh-dist s-coord g-coord))))))
-
