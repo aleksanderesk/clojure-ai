@@ -75,3 +75,14 @@
                   :let [g-coord (get goal-coords value)]
                   :when (not= 0 value)] ; don't include blank in Manhattan calculation
               (manh-dist s-coord g-coord))))))
+
+(defn manh-heur 
+  [[state goal]] 
+  (let [goal-coords (matrix->coords goal) 
+        state-coords (matrix->coords state)] 
+    (reduce + 
+            (for [[value s-coord] state-coords 
+                  :let [g-coord (get goal-coords value)] 
+                  :when (not= 0 value)] 
+              (manh-dist s-coord g-coord)))))
+
