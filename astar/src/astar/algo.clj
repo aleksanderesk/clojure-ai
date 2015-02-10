@@ -25,7 +25,7 @@
                                      start 
                                      (Node. "Start " start nil 0 (heuristic start) (heuristic start)))
          explored #{}]
-    (when-let [[state node] (peek queue)]
+    (if-let [[state node] (peek queue)]
       (if (goal? state)
         (do
           (println (str (count explored)) "nodes explored")
@@ -34,4 +34,5 @@
                      (for [[s a w] (move state)
                            :when (not (contains? explored s))]
                        [s (Node. a s node (+ w (:g node)) (heuristic s) (+ w (:g node) (heuristic s)))]))
-               (conj explored state)))))) ; add visited node to explored
+               (conj explored state))) ; add visited node to explored
+      (println (str (count explored)) "nodes explored")))) ; print nodes explored on algorithm termination

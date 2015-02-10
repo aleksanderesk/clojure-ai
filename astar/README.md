@@ -4,7 +4,7 @@ The classic A\* algorithm as implemented in Clojure to solve the 8-Puzzle proble
 
 ## Usage
 
-FIXME
+To build, make the build.sh script executable, and run it. The script will download the Clojure Leiningen build tool, any dependencies, build, then run the code.
 
 ## License
 
