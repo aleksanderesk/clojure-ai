@@ -1,6 +1,11 @@
+;;;; Name: Aleksander Eskilson
+;;;; KUID: 2373732
+;;;; Email: aeskilson@ku.edu
+;;;; Descr: Functions specific to the 8-Puzzle problem
 (ns astar.tile
   (:require [clojure.data.int-map :as i]))
 
+;;; utility functions
 (defn- swap
   "Swap the position of two elements in a vector"
   [coll i j]

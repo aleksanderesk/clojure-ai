@@ -1,8 +1,13 @@
+;;;; Name: Aleksander Eskilson
+;;;; KUID: 2373732
+;;;; Email: aeskilson@ku.edu
+;;;; Descr: Main execution function
 (ns astar.core
   (:gen-class)
   (:require [astar.tile :as tile]
             [astar.algo :as algo]))
 
+;;; Goal and Start states
 (def goal
   [[1 2 3]
    [4 5 6]
@@ -38,6 +43,7 @@
    [4 5 6]
    [8 7 0]])
 
+;;; Print results
 (defn- print-solution
   [solution]
   (if (seq solution)
@@ -46,7 +52,8 @@
     (println "No solution")))
 
 (defn run-all
-  "Automatically executes and times each puzzle run"
+  "Automatically executes and times each puzzle run with Null followed by Manhattan
+  heuristic"
   []
   (let [starts      [s0 s1 s2 s3 s4 s5]
         heuristics  [(tile/null-heuristic goal) (tile/manhattan-heuristic goal)]
@@ -70,6 +77,7 @@
         heuristic (heuristic-fn goal)]
     (algo/A* start goal? move-fn heuristic-fn)))
 
+;;; Main function of executable jar
 (defn -main [& args]
   "Default execution for uberjar"
   (run-all))

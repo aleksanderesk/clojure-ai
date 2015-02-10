@@ -1,3 +1,7 @@
+;;;; Name: Aleksander Eskilson
+;;;; KUID: 2373732
+;;;; Email: aeskilson@ku.edu
+;;;; Descr: A* specific functions
 (ns astar.algo
   (:require [clojure.data.priority-map :as p]))
 
@@ -23,7 +27,9 @@
          explored #{}]
     (when-let [[state node] (peek queue)]
       (if (goal? state)
-        (reverse (pred-chain node)) ; solution found, return node and predecessor chain
+        (do
+          (println (str (count explored) " nodes explored")
+          (reverse (pred-chain node))) ; solution found, return node and predecessor chain
         (recur (into (pop queue)    ; explore nodes neighbors, insert with priority into map
                      (for [[s a w] (move state)
                            :when (not (contains? explored s))]
