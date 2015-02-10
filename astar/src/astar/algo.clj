@@ -28,7 +28,7 @@
     (when-let [[state node] (peek queue)]
       (if (goal? state)
         (do
-          (println (str (count explored) " nodes explored")
+          (println (str (count explored)) " nodes explored")
           (reverse (pred-chain node))) ; solution found, return node and predecessor chain
         (recur (into (pop queue)    ; explore nodes neighbors, insert with priority into map
                      (for [[s a w] (move state)
