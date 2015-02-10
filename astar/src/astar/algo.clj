@@ -2,25 +2,30 @@
   (:require [clojure.data.priority-map :as p]))
 
 (defrecord Node
-  [state pred g h f])
+  [action state pred g h f])
 
 (defn pred-chain
+  "Navigates through the predecessors of the solution state, builds list of
+  intermediat results"
   [node]
   (loop [ls [] n node]
     (if n
-      (recur (conj ls [(:state n) (:g n) (:h n) (:f n)]) (:pred n))
+      (recur (conj ls [(:action n) (:state n) (:g n) (:h n) (:f n)]) (:pred n))
       ls)))
 
-(defn A* [start goal? move heuristic]
+(defn A* 
+  "A* as implemented with an immutable Priority Map - prioritizes by node's f value,
+  handles insertion of duplicates" 
+  [start goal? move heuristic]
   (loop [queue (p/priority-map-keyfn #(:f %) 
                                      start 
-                                     (Node. start nil 0 (heuristic start) (heuristic start)))
+                                     (Node. "Start " start nil 0 (heuristic start) (heuristic start)))
          explored #{}]
     (when-let [[state node] (peek queue)]
       (if (goal? state)
-        (reverse (pred-chain node))
-        (recur (into (pop queue)
+        (reverse (pred-chain node)) ; solution found, return node and predecessor chain
+        (recur (into (pop queue)    ; explore nodes neighbors, insert with priority into map
                      (for [[s a w] (move state)
                            :when (not (contains? explored s))]
-                       [s (Node. s node (+ w (:g node)) (heuristic s) (+ w (:g node) (heuristic s)))]))
-               (conj explored state))))))
+                       [s (Node. a s node (+ w (:g node)) (heuristic s) (+ w (:g node) (heuristic s)))]))
+               (conj explored state)))))) ; add visited node to explored

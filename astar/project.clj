@@ -6,4 +6,4 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/data.priority-map "0.0.5"]
                  [org.clojure/data.int-map "0.1.0"]]
-  :jvm-opts ["-Xmx3g" "-server"])
+  :main astar.core)

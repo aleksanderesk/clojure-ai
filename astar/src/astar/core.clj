@@ -1,4 +1,5 @@
 (ns astar.core
+  (:gen-class)
   (:require [astar.tile :as tile]
             [astar.algo :as algo]))
 
@@ -37,21 +38,38 @@
    [4 5 6]
    [8 7 0]])
 
-(defn print-solutions
-  [sols]
-  (doseq [sol sols]
-    (println sol)))
+(defn- print-solution
+  [solution]
+  (if (seq solution)
+    (doseq [step solution]
+      (println step))
+    (println "No solution")))
 
-(defn tile-puzzle-h
-  [start goal]
-  (let [goal?         (tile/goal goal)
-        move-fn       tile/move
-        heuristic-fn  (tile/manhattan-heuristic goal)]
+(defn run-all
+  "Automatically executes and times each puzzle run"
+  []
+  (let [starts      [s0 s1 s2 s3 s4 s5]
+        heuristics  [(tile/null-heuristic goal) (tile/manhattan-heuristic goal)]
+        params      (for [start starts
+                           heuristic heuristics]
+                          [start heuristic])]
+    (println "Note: All run pairs are Null followed by Manhattan")
+    (doseq [param params]
+      (println "====== Run ======")
+      (print-solution
+        (time ((partial
+                (fn [[start heur]]
+                  (algo/A* start (tile/goal goal) tile/move heur)))
+               param))))))
+
+(defn tile-puzzle
+  "Execute a custom puzzle run"
+  [start heuristic-fn]
+  (let [goal?     (tile/goal goal)
+        move-fn   tile/move
+        heuristic (heuristic-fn goal)]
     (algo/A* start goal? move-fn heuristic-fn)))
 
-(defn tile-puzzle-n
-  [start goal]
-  (let [goal?         (tile/goal goal)
-        move-fn       tile/move
-        heuristic-fn  (tile/null-heuristic goal)]
-    (algo/A* start goal? move-fn heuristic-fn)))
+(defn -main [& args]
+  "Default execution for uberjar"
+  (run-all))
