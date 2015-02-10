@@ -55,7 +55,7 @@
   "Automatically executes and times each puzzle run with Null followed by Manhattan
   heuristic"
   []
-  (let [starts      [s5]
+  (let [starts      [s1 s2 s3 s4 s5]
         heuristics  [(tile/null-heuristic goal) (tile/manhattan-heuristic goal)]
         params      (for [start starts
                            heuristic heuristics]
