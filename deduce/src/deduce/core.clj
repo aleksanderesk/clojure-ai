@@ -52,6 +52,7 @@
 (defn run-all
   []
   (do
+    (println "Note: Results vectors are [(Previous utilized axiom) (Result of unification) Sum Heuristic Weight]")
     (deduce axioms1 conjs1)
     (deduce axioms2 conjs2)))
 
