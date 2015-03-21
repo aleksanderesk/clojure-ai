@@ -35,4 +35,4 @@
                            :when (not (contains? explored s))]
                        [s (Node. a s node (+ w (:g node)) (heuristic s) (+ w (:g node) (heuristic s)))]))
                (conj explored state))) ; add visited node to explored
-      (println (str (count explored)) "nodes explored")))) ; print nodes explored on algorithm termination
+      (println (str (count explored)) "terminated")))) ; print nodes explored on algorithm termination
