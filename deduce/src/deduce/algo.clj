@@ -14,7 +14,7 @@
   [node]
   (loop [ls [] n node]
     (if n
-      (recur (conj ls [(str "Previously resolved: " (:action n)) (str "Resolution result: " (:state n)) (:g n) (:h n) (:f n)]) (:pred n))
+      (recur (conj ls [(:action n) (:state n) (:g n) (:h n) (:f n)]) (:pred n))
       ls)))
 
 (defn A* 

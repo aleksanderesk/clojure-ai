@@ -24,10 +24,6 @@
   [k th]
   (not (nil? (get th k))))
 
-(defn extend-bindings
-  [k v th]
-  (assoc th k v))
-
 (defn occur?
   [v t th]
   (cond
