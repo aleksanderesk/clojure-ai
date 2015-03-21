@@ -28,7 +28,6 @@
   [k v th]
   (assoc th k v))
 
-
 (defn occur?
   [v t th]
   (cond
@@ -78,7 +77,7 @@
 
 (defn instantiate
   [bindings exp]
-  (substitute-bindings bindings exp))
+  (substitute-bindings exp bindings))
 
 (defn find-unique-vars
   [exp found]
