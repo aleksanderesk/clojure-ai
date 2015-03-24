@@ -97,7 +97,7 @@
     (let [renamed-lc (rename-clause lc)
           unifiable-vars (unify {} (first (rest (first renamed-lc))) (first kd))]
       (if unifiable-vars
-        [(first kd) 
+        [kd
          (substitute-bindings unifiable-vars (apply list (concat (rest renamed-lc) (rest kd))))]
         false))
     false))
