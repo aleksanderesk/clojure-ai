@@ -84,9 +84,9 @@
   [lc kd]
   (if (negated-term? (first lc))
     (let [renamed-lc (rename-clause lc)
-          unifiable (unify {} (first (rest (first renamed-lc))) (first kd))]
-      (if unifiable
-        [(first kd) (substitute-bindings unifiable (concat (rest renamed-lc) (rest kd)))]
+          unifiable-vars (unify {} (first (rest (first renamed-lc))) (first kd))]
+      (if unifiable-vars
+        [(first kd) (substitute-bindings unifiable-vars (apply list (concat (rest renamed-lc) (rest kd))))]
         false))
     false))
 
