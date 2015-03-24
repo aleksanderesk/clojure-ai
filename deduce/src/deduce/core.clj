@@ -9,7 +9,7 @@
 
 ;;; Axioms and Start states
 (def axioms1
-  '(((Criminal ?x) (¬(American ?x)) (¬(Weapon ?y)) (¬(Sells ?x ?y ?z)) (¬(Hostile ?z)))
+  '(((Traitor ?x) (¬(American ?x)) (¬(Weapon ?y)) (¬(Sells ?x ?y ?z)) (¬(Hostile ?z)))
     ((Enemy Nono America))
     ((Owns Nono M1))
     ((Missile M1))
@@ -20,7 +20,8 @@
     ((Hostile ?x) (¬(Enemy ?x America)))
     ((Hostile ?x) (¬(Hostile (Father-of ?x))))))
 
-(def conjs1 '((¬(Criminal West))))
+
+(def conjs1 '((¬(Traitor West)))) ; "We don't use the word 'traitor' enough." ~ Andrew Douglas Ginn
 
 (def axioms2
   '(((=(* ?x One) ?x))
