@@ -7,7 +7,7 @@
   (:require [deduce.resolve :as res]
             [deduce.algo :as algo]))
 
-;;; Goal and Start states
+;;; Axioms and Start states
 (def axioms1
   '(((Criminal ?x) (¬(American ?x)) (¬(Weapon ?y)) (¬(Sells ?x ?y ?z)) (¬(Hostile ?z)))
     ((Enemy Nono America))
@@ -16,9 +16,9 @@
     ((Sells West ?x Nono) (¬(Missile ?x)) (¬(Owns Nono ?x)))
     ((American West))
     ((Weapon ?x) (¬(Missile ?x)))
-    ((Hostile ?x) (¬(Hostile (Mother-of ?x) )))
+    ((Hostile ?x) (¬(Hostile (Mother-of ?x))))
     ((Hostile ?x) (¬(Enemy ?x America)))
-    ((Hostile ?x) (¬(Hostile (Father-of ?x) )))))
+    ((Hostile ?x) (¬(Hostile (Father-of ?x))))))
 
 (def conjs1 '((¬(Criminal West))))
 
