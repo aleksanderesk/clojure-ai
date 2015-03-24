@@ -22,7 +22,7 @@
 
 (defn isbound? 
   [k th]
-  (not (nil? (get th k))))
+  (contains? th k))
 
 (defn occur?
   [v t th]
@@ -60,52 +60,25 @@
     :else (reduce merge-quit {} (map (fn [pi qi] (unify th pi qi)) (rest p) (rest q)))))
 
 (defn substitute-bindings
-  [bindings exp]
-  (cond
-    (= bindings false) false
-    (empty? bindings) exp
-    :else (for [sym exp]
-            (cond
-              (list? sym) (substitute-bindings bindings sym)
-              (and (variable? sym) (contains? bindings sym)) (get bindings sym)
-              :else sym))))
+  [bindings expression]
+  (cond (list? expression) (map #(substitute-bindings bindings %) expression)
+        (and (variable? expression) (contains? bindings expression)) (get bindings expression)
+        :else expression))
 
 
-(defn instantiate
-  [bindings exp]
-  (substitute-bindings exp bindings))
-
-(defn find-unique-vars
-  [exp found]
-  (cond
-    (= exp '()) found
-    :else (if (symbol? exp)
-            (if (and (variable? exp) (not (contains? found exp)))
-              (conj exp found)
-              found)
-            (find-unique-vars (rest (list (first exp))) 
-                                     (find-unique-vars (rest (rest exp)) 
-                                                       found)))))
-
-(defn freevarsin
-  [exp]
-  (find-unique-vars exp '()))
-
-(defn rename-variables
-  [exp]
-  (substitute-bindings (map (fn [y] '(y (gensym y))) (freevarsin exp)) exp))
-
-(defn instantiate-clause
-  [c a]
-  (map (fn [x] (instantiate x a)) c))
+(defn free-vars-in-clause
+  [clause]
+  (cond (list? clause) (flatten (map free-vars-in-clause clause))
+        (variable? clause) clause
+        :else nil))
 
 (defn rename-clause
-  [c]
-  (map (fn [x] (rename-variables x)) c))
-
-(defn freevarsin-clause
-  [c]
-  (concat (map (fn [x] (rename-variables x)) c)))
+  [clause]
+  (let [bindings-list (filter #(not (nil? %)) (free-vars-in-clause clause))
+        bindings-set  (reduce conj #{} bindings-list)
+        bindings-map  (reduce merge {} (map (fn [y] {y (gensym y)}) bindings-set))]
+    (substitute-bindings bindings-map
+                         clause)))
 
 (defn resolver
   [lc kd]
@@ -113,7 +86,7 @@
     (let [renamed-lc (rename-clause lc)
           unifiable (unify {} (first (rest (first renamed-lc))) (first kd))]
       (if unifiable
-        [(first kd) (rename-clause (instantiate-clause (concat (rest renamed-lc) (rest kd)) unifiable))]
+        [(first kd) (substitute-bindings unifiable (concat (rest renamed-lc) (rest kd)))]
         false))
     false))
 
@@ -122,7 +95,7 @@
   (for [[prev move] (filter (fn [r] (not= r false))
                      (map (fn [c] (resolver state c))
                           clauses))]
-    [(into '() move) prev 1]))
+    [move prev 1]))
 
 (defn res-heuristic
   [state]

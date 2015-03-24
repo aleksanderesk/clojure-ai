@@ -11,8 +11,8 @@
 (def axioms1
   '(((Criminal ?x) (¬(American ?x)) (¬(Weapon ?y)) (¬(Sells ?x ?y ?z)) (¬(Hostile ?z)))
     ((Enemy Nono America))
-    ((Owns Nono M1 ))
-    ((Missile M1 ))
+    ((Owns Nono M1))
+    ((Missile M1))
     ((Sells West ?x Nono) (¬(Missile ?x)) (¬(Owns Nono ?x)))
     ((American West))
     ((Weapon ?x) (¬(Missile ?x)))
