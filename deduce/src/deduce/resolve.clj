@@ -3,7 +3,8 @@
 ;;;; Email: aeskilson@ku.edu
 ;;;; Descr: Functions specific to the Resolution and Unification
 (ns deduce.resolve
-  (:require [deduce.utils :refer [merge-quit]]))
+  (:require [deduce.utils :refer [merge-quit]]
+            [clojure.pprint :as pp]))
 
 (defn variable?
   "Determines if the expression is a variable symbol"
@@ -107,6 +108,8 @@
   unification move by attempting to resolve the current state against all
   axioms"
   [clauses state]
+  (pp/pprint state)
+  (pp/pprint clauses)
   (for [[prev move] (filter #(not= % false)
                             (map #(resolver state %)
                                  clauses))]

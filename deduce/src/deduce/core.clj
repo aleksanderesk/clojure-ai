@@ -7,31 +7,30 @@
   (:require [deduce.resolve :as res]
             [deduce.algo :as algo]))
 
-;;; Axioms and Start states
+;;; Goal and Start states
 (def axioms1
-  '(((Traitor ?x) (¬(American ?x)) (¬(Weapon ?y)) (¬(Sells ?x ?y ?z)) (¬(Hostile ?z)))
+  '(((Criminal ?x) (¬(American ?x)) (¬(Weapon ?y)) (¬(Sells ?x ?y ?z)) (¬(Hostile ?z)))
     ((Enemy Nono America))
     ((Owns Nono M1))
     ((Missile M1))
     ((Sells West ?x Nono) (¬(Missile ?x)) (¬(Owns Nono ?x)))
     ((American West))
     ((Weapon ?x) (¬(Missile ?x)))
-    ((Hostile ?x) (¬(Hostile (Mother-of ?x))))
+    ((Hostile ?x) (¬(Hostile (Mother-of ?x) )))
     ((Hostile ?x) (¬(Enemy ?x America)))
-    ((Hostile ?x) (¬(Hostile (Father-of ?x))))))
+    ((Hostile ?x) (¬(Hostile (Father-of ?x) )))))
 
-
-(def conjs1 '((¬(Traitor West)))) ; "We don't use the word 'traitor' enough." ~ Andrew Douglas Ginn
+(def conjs1 '((¬(Criminal West))))
 
 (def axioms2
-  '(((=(* ?x One) ?x))
+  '(((=(* F G) H))
+    ((=(* ?x One) ?x))
     ((=(* One ?x) ?x))
     ((=(* ?x (/ ?x)) One))
     ((=(* (/ ?x) ?x) One))
-    ((=(* ?x ?w) ?v) (¬(=(* ?x ?y) ?u)) (¬(=(* ?y ?z) ?w)) (¬(=(* ?u ?z) ?v)))
-    ((=(* ?u ?z) ?v) (¬(=(* ?x ?y) ?u)) (¬(=(* ?y ?z) ?w)) (¬(=(* ?x ?w) ?v)))
     ((=(* ?x ?x) One))
-    ((=(* F G) H))))
+    ((=(* ?x ?w) ?v) (¬(=(* ?x ?y) ?u)) (¬(=(* ?y ?z) ?w)) (¬(=(* ?u ?z) ?v)))
+    ((=(* ?u ?z) ?v) (¬(=(* ?x ?y) ?u)) (¬(=(* ?y ?z) ?w)) (¬(=(* ?x ?w) ?v)))))
 
 (def conjs2 '((¬(= (* G F) H))))
 
