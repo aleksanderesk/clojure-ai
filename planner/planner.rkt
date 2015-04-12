@@ -173,3 +173,6 @@
         (goal? (curry goal-fn goal))
         (heuristic (curry heuristic-fn goal)))
     (A* start goal? move-fn heuristic)))
+
+(planner start-state actions goal1)
+(planner start-state actions goal2)
