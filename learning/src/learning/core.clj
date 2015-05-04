@@ -49,6 +49,7 @@
        (for [i (range 0 m)]
          (+ eps (- (* th (cl/get X1 i 0)) (cl/get Y1 i 0)))))))
 
+; Gradient Descent
 (defn gradient-descent
   [th' eps' th-start eps-start alpha]
   (loop [th-old th-start eps-old eps-start]
@@ -69,7 +70,7 @@
                       5
                       17)))
 
-;;; Problem Two: The Iris Problem
+;;; Problem Two: The Iris Problem, Ordinary Least Squares
 (def iris
   (to-matrix (get-dataset :iris)))
 
@@ -105,3 +106,100 @@
           (map -
                exper
                theor)))
+
+;;; Problem Three: The Fish Problem, Bayesian Classification
+;; Helpers
+(defn make-sea-bass []
+  #{:sea-bass
+    (if (< (rand) 0.2) :fat :thin)
+    (if (< (rand) 0.7) :long :short)
+    (if (< (rand) 0.8) :light :dark)})
+
+(defn make-salmon []
+  #{:salmon
+    (if (< (rand) 0.8) :fat :thin)
+    (if (< (rand) 0.5) :long :short)
+    (if (< (rand) 0.3) :light :dark)})
+
+(defn make-sample-fish []
+  (if (< (rand) 0.3) (make-sea-bass) (make-salmon)))
+
+(def fish-training-data
+  (for [i (range 10000)]
+    (make-sample-fish)))
+
+;; Probability functions
+(defn probability
+  [attribute & {:keys
+                [category prior-positive prior-negative data]
+                :or {category nil
+                     data fish-training-data}}]
+  (let [by-category (if category
+                      (filter category data)
+                      data)
+        positive (count (filter attribute by-category))
+        negative (- (count by-category) positive)
+        total (+ positive negative)]
+    (/ positive total)))
+
+(defn evidence-of-category-with-attrs [category & attrs]
+  (let [attr-probs (map #(probability % :category category) attrs)
+        class-and-attr-prob (conj attr-probs
+                                  (probability category))]
+    (float (apply * class-and-attr-prob))))
+
+(def prob-sum ; this should be approximately 1.0
+  (+ (evidence-of-category-with-attrs :salmon) (evidence-of-category-with-attrs :sea-bass)))
+
+(defn make-category-probability-pair
+  [category attrs]
+  (let [evidence-of-category (apply evidence-of-category-with-attrs category attrs)]
+    {:category category
+     :evidence evidence-of-category}))
+
+(defn calculate-probability-of-category
+  [sum-of-evidences pair]
+  (let [probability-of-category (/ (:evidence pair)
+                                   sum-of-evidences)]
+    (assoc pair :probability probability-of-category)))
+
+; Bayesian Classifier
+(defn classify-by-attrs
+  [categories & attrs]
+  (let [pairs (map #(make-category-probability-pair % attrs)
+                   categories)
+        sum-of-evidences (reduce + (map :evidence pairs))
+        probabilities (map #(calculate-probability-of-category sum-of-evidences %)
+                           pairs)
+        sorted-probabilities (sort-by :probability probabilities)
+        predicted-category (last sorted-probabilities)]
+    predicted-category))
+
+; Results of classifer
+(def classify-set
+  [(classify-by-attrs [:salmon :sea-bass] :dark :long :fat)
+   (classify-by-attrs [:salmon :sea-bass] :light :short :thin)])
+
+(defn -main [& args]
+  (println "Problem 1: Single Variable Gradient Descent on Scatter Plot")
+  (println "Theoretical - Linear Model:")
+  (println (str "Linear Coefficients, Y = b + mx, b=" (first (:coefs samp-linear-model)) ", m=" (second (:coefs samp-linear-model))))
+  (plot-model)
+  (println "Experimental - Applying Gradient Descent, Gradient Model:")
+  (println (str "Gradient Coefficients, Y = b + mx, b=" (first gradient-model-coefs) ", m=" (second gradient-model-coefs)))
+  (gradient-model)
+  (println)
+  (println "Problem 2: Multivariable Ordinary Least Squares on the Iris Data Set")
+  (println "Theoretical - Linear Model:")
+  (println (str "Coefficients: " iris-linear-model-coefs))
+  (println "Experimental - OLS:")
+  (println (str "Coefficients: " ols-linear-model-coefs))
+  (println (str "Is every OLS coefficient withint acceptable bound of error? " (acceptable?
+                                                                             ols-linear-model-coefs
+                                                                             iris-linear-model-coefs)))
+  (println)
+  (println "Problem 3: Bayesian Classifier on Sea Bass and Salmon")
+  (println "Training Bayesian Classifer on 10000 generated samples")
+  (println (str "What is a dark, long, fat fish? (expected value, Salmon): " (first classify-set)))
+  (println (str "What is a light, short, thin fish? (expected value, Sea Bass): " (second classify-set)))
+  (println "END"))
