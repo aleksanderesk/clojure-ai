@@ -2,6 +2,7 @@
 ;;; Least Squares, and the Bayesian Classifier
 ;;; Aleksander Eskilson
 (ns learning.core
+  (:gen-class)
   (:use [clojure.core.matrix]
         [incanter.core :only [view sel to-matrix bind-columns]]
         [incanter.stats :only [linear-model]]
