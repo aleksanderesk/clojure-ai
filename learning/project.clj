@@ -5,4 +5,4 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [incanter "1.5.6"]
-                 [clatrix "0.4.0"]])
+                 [net.mikera/vectorz-clj "0.29.0"]])
