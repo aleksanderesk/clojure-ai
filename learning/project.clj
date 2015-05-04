@@ -7,4 +7,5 @@
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [incanter "1.5.6"]
                  [net.mikera/vectorz-clj "0.29.0"]]
+  :source-paths ["src"]
   :main learning.core)
