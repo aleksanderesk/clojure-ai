@@ -1,3 +1,6 @@
+;;; Driver for various machine learning algorithms, Gradient Descent, Ordinary
+;;; Least Squares, and the Bayesian Classifier
+;;; Aleksander Eskilson
 (ns learning.core
   (:use [clojure.core.matrix]
         [incanter.core :only [view sel to-matrix bind-columns]]
@@ -180,6 +183,7 @@
   [(classify-by-attrs [:salmon :sea-bass] :dark :long :fat)
    (classify-by-attrs [:salmon :sea-bass] :light :short :thin)])
 
+;;; Main
 (defn -main [& args]
   (println "Problem 1: Single Variable Gradient Descent on Scatter Plot")
   (println "Theoretical - Linear Model:")
