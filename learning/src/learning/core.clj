@@ -185,7 +185,7 @@
    (classify-by-attrs [:salmon :sea-bass] :light :short :thin)])
 
 ;;; Main
-(defn -main [& args]
+(defn main [& args]
   (println "Problem 1: Single Variable Gradient Descent on Scatter Plot")
   (println "Theoretical - Linear Model:")
   (println (str "Linear Coefficients, Y = b + mx, b=" (first (:coefs samp-linear-model)) ", m=" (second (:coefs samp-linear-model))))

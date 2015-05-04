@@ -4,7 +4,7 @@ Three Machine Learing Algorithms implemented in Clojure. Single Variable Gradien
 
 ## Usage
 
-To build, make the build.sh script executable, and run it. The script will download the Clojure Leiningen build tool, any dependencies, build, then run the code. NOTE: Your machine must have the library libgfortran3 in order for Clatrix to work correctly.
+To build, make the build.sh script executable, and run it. The script will download the Clojure Leiningen build tool, any dependencies, and then open the REPL. In the REPL, run the commands, (use 'learning.core) and (main). This will execute the main driver. NOTE: Your machine must have the library libgfortran3 in order for Clatrix to work correctly.
 
 ## License
 
